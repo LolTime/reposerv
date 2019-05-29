@@ -1,0 +1,25 @@
+- hosts: nfs
+  vars:
+    become: yes
+    become_method: sudo
+  tasks:
+  - name: Install packages
+    package:
+     name: nfs-utils
+     state: present
+  - name: Allow ssh password authentication
+    shell: sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config
+  - name: Mount ISO disk
+    shell: sudo mount -o loop /vagrant/*.iso /mnt
+  - name: Edit exports file
+    lineinfile:
+     path: /etc/exports
+     state: present
+     line: '/mnt 0.0.0.0/0(rw,sync,no_root_squash,no_all_squash)'
+  - name: Restart nfs server
+    service:
+     name: "{{ item }}"
+     state: restarted
+    with_items:
+    - nfs-server
+    - sshd

@@ -1,0 +1,4 @@
+# Ignore ISO files
+*.iso
+#Ignore .vagrant directory
+/.vagrant

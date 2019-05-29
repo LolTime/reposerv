@@ -1,0 +1,1 @@
+This file intended to help with nfs server configuration

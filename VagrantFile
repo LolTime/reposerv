@@ -1,0 +1,16 @@
+#Export variables
+servname = 'nfsserv'
+ipaddr = '192.168.170.13'
+#Configuration
+Vagrant.configure("2") do |config|
+config.vm.define "nfs" do |nfs|
+  nfs.vm.box = "centos/7"
+  nfs.vm.hostname = servname
+  nfs.vm.network  "private_network", ip: ipaddr
+  nfs.vm.provision "ansible_local" do |ansible|
+   ansible.install = true
+   ansible.become = true
+   ansible.playbook = "nfsserv.yml"
+end
+end
+end
